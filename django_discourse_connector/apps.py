@@ -5,6 +5,7 @@ from django.db.models.signals import m2m_changed
 class DjangoDiscourseConnectorConfig(AppConfig):
     name = 'django_discourse_connector'
     verbose_name = 'discourse'
+    url_slug = 'discourse'
 
     def ready(self):
         from .signals import user_group_change_sync_discourse_groups
