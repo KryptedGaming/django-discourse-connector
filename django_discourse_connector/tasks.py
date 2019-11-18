@@ -7,7 +7,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-discourse_request = DiscourseRequest.get_instance()
+
 
 
 @shared_task
@@ -19,6 +19,7 @@ def sync_discourse_users():
 
 @shared_task
 def sync_discourse_groups():
+    discourse_request = DiscourseRequest.get_instance()
     response = discourse_request.get_groups()
 
     if responses[response.status_code] != "OK":
@@ -49,6 +50,7 @@ def sync_discourse_groups():
 
 @shared_task
 def sync_discourse_user_groups(discourse_user_id):
+    discourse_request = DiscourseRequest.get_instance()
     discourse_user = DiscourseUser.objects.get(external_id=discourse_user_id)
     response = discourse_request.get_discourse_user(discourse_user_id)
 
@@ -112,6 +114,7 @@ def sync_discourse_user_groups(discourse_user_id):
 
 @shared_task
 def add_discourse_group_to_discourse_user(discourse_group_id, discourse_user_id):
+    discourse_request = DiscourseRequest.get_instance()
     discourse_user = DiscourseUser.objects.get(external_id=discourse_user_id)
     discourse_group = DiscourseGroup.objects.get_or_create(
         external_id=discourse_group_id)[0]
@@ -133,6 +136,7 @@ def add_discourse_group_to_discourse_user(discourse_group_id, discourse_user_id)
 
 @shared_task
 def remove_discourse_group_from_discourse_user(discourse_group_id, discourse_user_id):
+    discourse_request = DiscourseRequest.get_instance()
     discourse_user = DiscourseUser.objects.get(external_id=discourse_user_id)
     discourse_group = DiscourseGroup.objects.get_or_create(
         external_id=discourse_group_id)[0]
